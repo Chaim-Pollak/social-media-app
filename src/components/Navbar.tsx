@@ -6,14 +6,13 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, signInWithGitHub, signOut } = useAuth();
   const displayName = user?.user_metadata.user_name || user?.email;
-  console.log(user?.user_metadata.avatar_url);
 
   return (
     <nav className="fixed top-0 w-full z-40 bg-[rgba(10,10,10,0.8)] backdrop-blur-lg border-b border-white/10 shadow-lg">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="font-mono text-xl font-bold text-white">
-            forum<span className="text-purple-500">.app</span>
+            forum<span className="text-[#209d7d]">.app</span>
           </Link>
 
           {/* Desktop Links */}
