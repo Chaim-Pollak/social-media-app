@@ -31,16 +31,18 @@ export default function PostDetails({ postId }: Props) {
   if (isError) <div>Error: {error.message}</div>;
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-6xl font-bold mb-6 text-center bg-gradient-to-r from-[#209d7d] to-[#3be9cf]bg-clip-text text-transparent">
+    <div className="max-w-6xl mx-auto space-y-6">
+      <h2 className="text-6xl font-bold mb-6 text-center bg-gradient-to-r from-[#209d7d] to-[#3be9cf] bg-clip-text text-transparent">
         {data?.title}
       </h2>
 
-      <img
-        src={data?.image_url}
-        alt={data?.title}
-        className="mt-4 rounded object-cover w-full h-64"
-      />
+      {data?.image_url && (
+        <img
+          src={data.image_url}
+          alt={data?.title}
+          className="mt-4 rounded object-cover w-full h-64"
+        />
+      )}
 
       <p className="text-gray-400">{data?.content}</p>
       <p className="text-gray-500 text-sm">

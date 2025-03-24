@@ -102,7 +102,7 @@ export default function LikeButton({ postId }: Props) {
           userVote === 1 ? "bg-green-500 text-white" : "bg-gray-200 text-black"
         }`}
       >
-        Like 👍 {likes}
+        👍{likes}
       </button>
       <button
         onClick={() => mutate(-1)}
@@ -110,7 +110,7 @@ export default function LikeButton({ postId }: Props) {
           userVote === -1 ? "bg-red-500 text-white" : "bg-gray-200 text-black"
         }`}
       >
-        Dislike 👎 {dislikes}
+        👎{dislikes}
       </button>
     </div>
   );
