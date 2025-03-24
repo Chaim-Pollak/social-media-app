@@ -1,12 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ChangeEvent, useState } from "react";
 import { supabase } from "../supabase-client";
 import { useAuth } from "../context/AuthContext";
+import { Community, fetchCommunities } from "./CommunityList";
 
 interface PostInput {
   title: string;
   content: string;
   avatar_url: string | null;
+  community_id?: number | null;
 }
 
 const createPost = async (post: PostInput, imageFile: File) => {
@@ -34,8 +36,14 @@ const createPost = async (post: PostInput, imageFile: File) => {
 export default function CreatePost() {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const [communityId, setCommunityId] = useState<number | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { user } = useAuth();
+
+  const { data: communities } = useQuery<Community[], Error>({
+    queryKey: ["communities"],
+    queryFn: fetchCommunities,
+  });
 
   const { mutate, isPending, isError } = useMutation({
     mutationFn: (data: { post: PostInput; imageFile: File }) => {
@@ -51,12 +59,18 @@ export default function CreatePost() {
         title,
         content,
         avatar_url: user?.user_metadata.avatar_url || null,
+        community_id: communityId,
       },
       imageFile: selectedFile,
     });
   };
 
-  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleCommunityChange(e: ChangeEvent<HTMLSelectElement>) {
+    const value = e.target.value;
+    setCommunityId(value ? Number(value) : null);
+  }
+
+  function handleFileChange(e: ChangeEvent<HTMLInputElement>): void {
     if (e.target.files && e.target.files[0]) {
       setSelectedFile(e.target.files[0]);
     }
@@ -90,6 +104,22 @@ export default function CreatePost() {
           rows={5}
           required
         />
+      </div>
+
+      <div>
+        <label htmlFor="">Select Community</label>
+        <select
+          name="community"
+          id="community"
+          onChange={handleCommunityChange}
+        >
+          <option value={""}>-- Choose a Community --</option>
+          {communities?.map((community, key) => (
+            <option value={community.id} key={key}>
+              {community.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div>
