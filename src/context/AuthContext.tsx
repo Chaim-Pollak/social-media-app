@@ -1,10 +1,12 @@
 import { User } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../supabase-client";
+import { data } from "react-router";
 
 interface AuthContextType {
   user: User | null;
   signInWithGitHub: () => void;
+  signInWithGoogle: () => void;
   signOut: () => void;
 }
 
@@ -31,12 +33,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     supabase.auth.signInWithOAuth({ provider: "github" });
   };
 
+  const signInWithGoogle = () => {
+    supabase.auth.signInWithOAuth({ provider: "google" });
+  };
+
   const signOut = () => {
     supabase.auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGitHub, signOut }}>
+    <AuthContext.Provider
+      value={{ user, signInWithGitHub, signInWithGoogle, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
