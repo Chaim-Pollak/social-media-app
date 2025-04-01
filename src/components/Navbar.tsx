@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user, signInWithGitHub, signOut } = useAuth();
-  const displayName = user?.user_metadata.user_name || user?.email;
+  const { user, signInWithGitHub, signInWithGoogle, signOut } = useAuth();
+  const displayName =
+    user?.user_metadata.user_name ||
+    user?.user_metadata.full_name ||
+    user?.email;
 
   return (
     <nav className="fixed top-0 w-full z-40 bg-[rgba(10,10,10,0.8)] backdrop-blur-lg border-b border-white/10 shadow-lg">
@@ -63,12 +68,21 @@ export default function Navbar() {
                 </button>
               </div>
             ) : (
-              <button
-                onClick={signInWithGitHub}
-                className="bg-blue-500 px-3 py-1 rounded"
-              >
-                Sign In With Github
-              </button>
+              <>
+                <span>Sign In With</span>
+                <button
+                  onClick={signInWithGitHub}
+                  className="px-3 py-1 text-2xl cursor-pointer"
+                >
+                  <FaGithub />
+                </button>
+                <button
+                  onClick={signInWithGoogle}
+                  className="px-3 py-1 text-2xl cursor-pointer"
+                >
+                  <FcGoogle />
+                </button>
+              </>
             )}
           </div>
 
